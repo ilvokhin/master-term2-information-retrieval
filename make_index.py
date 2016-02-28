@@ -9,7 +9,6 @@ import timeit
 import argparse
 import string
 import cPickle as pickle
-from collections import Counter
 from collections import defaultdict
 
 PUNCT = set(list(string.punctuation) + ['--', '...', '``', '\'\''])
@@ -42,28 +41,30 @@ def make_term(token):
 def print_stat(stat):
   print 'Index stat:'
   for cnt in stat:
-    print '%s: %d' % (cnt, stat[cnt])
+    print cnt, ':', stat[cnt]
 
-def collect_stat_per_doc(stat, tokens, terms):
+def collect_stat_per_doc(stat, tokens):
+  stat['avg_tokens_len'] += sum([len(tok) for tok in tokens])
   stat['tokens'] += len(tokens)
-  stat['terms'] += len(terms)
 
 def collect_stat_final(stat, docs, index):
   stat['docs'] = len(docs)
-  stat['uniq_terms'] = len(index)
+  stat['terms'] = len(index)
+  stat['avg_tokens_len'] /=  1. * stat['tokens']
+  stat['avg_terms_len'] = 1. * sum([len(term) for term in index]) / len(index)
 
 @time_exec
 def make_index(src):
-  stat = Counter()
-  docs = parse_file(src).find_all('dd')
+  stat = defaultdict(float)
   index = defaultdict(list)
+  docs = parse_file(src).find_all('dd')
 
   for doc_id, doc in enumerate(docs):
     tokens = nltk.word_tokenize(doc.text)
     terms = filter(lambda t: not t in PUNCT, map(make_term, tokens))
     for term in set(terms):
       index[term].append(doc_id)
-    collect_stat_per_doc(stat, tokens, terms)
+    collect_stat_per_doc(stat, tokens)
 
   collect_stat_final(stat, docs, index)
   print_stat(stat)
