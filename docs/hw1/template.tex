@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+
+\usepackage{fullpage}
+\usepackage{multicol, multirow}
+\usepackage{tabularx}
+\usepackage{standalone}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\newcommand{\StudentName}{Ильвохин Дмитрий}
+\newcommand{\Group}{1O-106М}
+\newcommand{\CourseName}{Информационный поиск}
+\newcommand{\LabNum}{1}
+\newcommand{\Subject}{Построение обратного индекса}
+\newcommand{\PrepName}{Калинин А.\,Л.}
+
+\begin{document}
+
+\lstset
+{
+        language=Python,
+        basicstyle=\scriptsize,% basic font setting
+        extendedchars=\true
+}
+
+\begin{flushright}
+\Large{
+	\CourseName \\
+	Лабораторная работа №\,\LabNum \\
+	<<\Subject>> \\
+  \StudentName, \Group \\
+  Дата: \line(1,0){150} \\
+  Подпись: \line(1,0){150} \\
+}
+\end{flushright}
+
+\subsection*{Задание}
+Построить обратный (документ -- параграф текста <p> </p>) для текстов:
+\begin{itemize}
+\item Толстой Л.\,Н. <<Анна Каренина>>.
+\item Толстой Л.\,Н. <<Исследование догматического богословия>>.
+\item Толстой Л.\,Н. <<Воскресение>>.
+\end{itemize}
+
+Собрать характеристики текста и индекса:
+\begin{itemize}
+\item Количество токенов и терминов.
+\item Средняя длина токена, термина.
+\end{itemize}
+
+\subsection*{Исходный код}
+\lstinputlisting[language=Bash]{../../make_index.py}
+
+\subsection*{Результаты}
+\lstinputlisting[language=Bash]{index.log.txt}
+
+\subsection*{Выводы}
+По-честному разбирать html медленно, особенно на языке программирования Python.
+
+\end{document}
+
