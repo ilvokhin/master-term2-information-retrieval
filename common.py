@@ -25,8 +25,11 @@ def lemmatize(token):
 def normalize(token):
   return token.lower()
 
-def make_term(token):
-  return lemmatize(normalize(token))
+def make_term(token, stem = False):
+  if stem:
+    return lemmatize(normalize(token))
+  else:
+    return normalize(token)
 
 def load_index(filename):
   with gzip.open(filename, 'rb') as f:
