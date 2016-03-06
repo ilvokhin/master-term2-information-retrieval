@@ -5,38 +5,21 @@ import sys
 import bs4
 import nltk
 import gzip
-import timeit
 import argparse
 import string
 import cPickle as pickle
+from common import make_term
+from common import time_exec
+from common import DOCS_CNT_KEY
 from collections import defaultdict
 
 PUNCT = set(list(string.punctuation) + ['--', '...', '``', '\'\''])
-
-def time_exec(func):
-  def wrapper(*args, **kwargs):
-    s = timeit.default_timer()
-    out = func(*args, **kwargs)
-    f = timeit.default_timer()
-    print '%s takes %f sec' % (func.__name__, f - s)
-    return out
-  return wrapper
 
 def parse_file(filename):
   with open(filename) as f:
     # there are not closed <dd> tag, so we should use parser, which
     # can handle it.
     return bs4.BeautifulSoup(f, 'html5lib', from_encoding='utf8')
-
-def lemmatize(token):
-  # can't find russian lemmatizer quickly, so nothing to do here yet
-  return token
-
-def normalize(token):
-  return token.lower()
-
-def make_term(token):
-  return lemmatize(normalize(token))
 
 def print_stat(stat):
   print 'Index stat:'
@@ -65,7 +48,8 @@ def make_index(src):
     for term in set(terms):
       index[term].append(doc_id)
     collect_stat_per_doc(stat, tokens)
-
+  # save max doc id for quick not in boolean search
+  index[DOCS_CNT_KEY] = len(docs)
   collect_stat_final(stat, docs, index)
   print_stat(stat)
   return index

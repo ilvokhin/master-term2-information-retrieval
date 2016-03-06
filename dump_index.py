@@ -4,13 +4,12 @@
 import gzip
 import argparse
 import cPickle as pickle
-
-def load_index(filename):
-  with gzip.open(filename, 'rb') as f:
-    return pickle.load(f)
+from common import load_index
+from common import DOCS_CNT_KEY
 
 def dump_index(index, dst):
   with open(dst, 'w') as f:
+    index.pop(DOCS_CNT_KEY)
     for term in sorted(index, key = lambda x: len(index[x]), reverse = True):
       docs = index[term]
       f.write('%s\t%d\t%s\n' % (term.encode('utf8'), len(docs), str(docs)))
