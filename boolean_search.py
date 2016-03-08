@@ -51,7 +51,7 @@ class EvalQuery(ast.NodeTransformer):
     return new_node
 
   def visit_Str(self, node):
-    term = make_term(node.s).decode('utf8')
+    term = make_term(node.s, False).decode('utf8')
     node.docs = self.index[term]
     node.weight = len(node.docs)
     return node

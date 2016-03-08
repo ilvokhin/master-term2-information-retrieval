@@ -5,6 +5,7 @@ import sys
 import gzip
 import timeit
 import cPickle as pickle
+from nltk.stem.snowball import RussianStemmer
 
 DOCS_CNT_KEY = '__docs_cnt'
 
@@ -18,16 +19,17 @@ def time_exec(func):
     return out
   return wrapper
 
-def lemmatize(token):
-  # can't find russian lemmatizer quickly, so nothing to do here yet
-  return token
+def stem(token):
+  if not hasattr(stem, 'stemmer'):
+    stem.stemmer = RussianStemmer()
+  return stem.stemmer.stem(token)
 
 def normalize(token):
   return token.lower()
 
-def make_term(token, stem = False):
-  if stem:
-    return lemmatize(normalize(token))
+def make_term(token, need_stemming = True):
+  if need_stemming:
+    return stem(normalize(token))
   else:
     return normalize(token)
 
