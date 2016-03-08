@@ -14,8 +14,8 @@
 \newcommand{\StudentName}{Ильвохин Дмитрий}
 \newcommand{\Group}{1O-106М}
 \newcommand{\CourseName}{Информационный поиск}
-\newcommand{\LabNum}{1}
-\newcommand{\Subject}{Построение обратного индекса}
+\newcommand{\LabNum}{3-4}
+\newcommand{\Subject}{Булев поиск}
 \newcommand{\PrepName}{Калинин А.\,Л.}
 
 \begin{document}
@@ -24,7 +24,9 @@
 {
         language=Python,
         basicstyle=\footnotesize,% basic font setting
-        extendedchars=\true
+        extendedchars=\true,
+        showstringspaces=\false,
+        inputencoding=utf8,
 }
 
 \begin{flushright}
@@ -39,11 +41,19 @@
 \end{flushright}
 
 \subsection*{Задание}
+Реализовать булев поиск по обратному индексу из лабораторной работы №1-2.
+Должны поддерживаться логические операторы: and, or, not.
+Вывести список найденных результатов.
 
 \subsection*{Исходный код}
+\lstinputlisting{../../../boolean_search.py}
 
 \subsection*{Результаты}
+\lstinputlisting[language=Bash]{search.log.txt}
 
 \subsection*{Выводы}
+С помощью правильного порядка пересечения списков вхождений терминов можно
+существенно сократить время выполнение пользовательского запроса.
+
 \end{document}
 
