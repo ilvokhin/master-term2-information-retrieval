@@ -1,0 +1,41 @@
+(ir) [d@gate ir]$ python make_index.py -s data/tolstoy/karenina.html -d karenina.stem.pickle.gz
+Index stat:
+tokens : 345115.0
+docs : 7798
+terms : 13647
+avg_terms_len : 6.52956693779
+avg_tokens_len : 4.15280413775
+make_index takes 65.674526 sec
+save_index takes 1.680392 sec
+
+(ir) [d@gate ir]$ du -h karenina.pickle.gz karenina.stem.pickle.gz 
+952K    karenina.pickle.gz
+628K    karenina.stem.pickle.gz
+
+(ir) [d@gate ir]$ python make_index.py -s data/tolstoy/issledovanie.html -d issledovanie.stem.pickle.gz
+Index stat:
+tokens : 113297.0
+docs : 2169
+terms : 6421
+avg_terms_len : 6.28173181747
+avg_tokens_len : 4.27684757761
+make_index takes 22.953464 sec
+save_index takes 0.521082 sec
+
+(ir) [d@gate ir]$ du -h issledovanie.pickle.gz issledovanie.stem.pickle.gz 
+304K    issledovanie.pickle.gz
+184K    issledovanie.stem.pickle.gz
+
+(ir) [d@gate ir]$ python make_index.py -s data/tolstoy/voskresenie.html -d voskresenie.stem.pickle.gz 
+Index stat:
+tokens : 190952.0
+docs : 4349
+terms : 12341
+avg_terms_len : 6.42889555141
+avg_tokens_len : 4.33724705685
+make_index takes 35.122160 sec
+save_index takes 1.147676 sec
+
+(ir) [d@gate ir]$ du -h voskresenie.pickle.gz voskresenie.stem.pickle.gz 
+612K    voskresenie.pickle.gz
+388K    voskresenie.stem.pickle.gz
