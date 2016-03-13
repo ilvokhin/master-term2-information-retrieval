@@ -1,0 +1,6 @@
+(ir) [d@gate ir]$ python make_zipf.py -s data/tolstoy/karenina.html \
+> -d zipf.png
+best params: const = 14500.000000, rho = 0.750000 (with error = 22765.069173)
+(ir) [d@gate ir]$ python make_mandelbrot.py -s data/tolstoy/karenina.html \
+> -d mandelbrot.png
+best params: p = 14500, rho = 0, b = 0.750000 (with error = 22765.069173)
