@@ -49,7 +49,7 @@ def make_plot(vals, filename, start, end, x_name, y_name):
   # f(rank) = const / rank**rho, check wiki for more details:
   # https://en.wikipedia.org/wiki/Zipf's_law
   const, rho = stupid_params_search(plot_pos, plot_vals)
-  print 'best params: const  = %f, rho = %f' % (const, rho)
+  print 'best params: const = %f, rho = %f' % (const, rho)
   plt.plot(plot_pos, [const / elem**rho for elem in plot_pos], 'o')
   # add some labels
   plt.title(filename)
@@ -60,7 +60,7 @@ def make_plot(vals, filename, start, end, x_name, y_name):
   plt.savefig(filename)
 
 def parse_args():
-  parser = argparse.ArgumentParser(description = 'Make term freq plot')
+  parser = argparse.ArgumentParser(description = 'Make Zipf term freq plot')
   parser.add_argument('-s', '--src', help = 'source file path', required  = True)
   parser.add_argument('-d', '--dst', help = 'destination file path', required  = True)
   return parser.parse_args()
