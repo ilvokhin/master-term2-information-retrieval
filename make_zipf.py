@@ -36,7 +36,7 @@ def stupid_params_search(pos, vals):
         min_avg_err = cur_err
         best_const = const
         best_rho = rho
-  return (best_const, best_rho)
+  return (best_const, best_rho, min_avg_err)
 
 def make_plot(vals, filename, start, end, x_name, y_name):
   fig = plt.figure(1)
@@ -48,8 +48,9 @@ def make_plot(vals, filename, start, end, x_name, y_name):
   # find params for analytic form, which looks like
   # f(rank) = const / rank**rho, check wiki for more details:
   # https://en.wikipedia.org/wiki/Zipf's_law
-  const, rho = stupid_params_search(plot_pos, plot_vals)
-  print 'best params: const = %f, rho = %f' % (const, rho)
+  const, rho, err = stupid_params_search(plot_pos, plot_vals)
+  print 'best params: const = %f, rho = %f (with error = %f)' \
+    % (const, rho, err)
   plt.plot(plot_pos, [const / elem**rho for elem in plot_pos], 'o')
   # add some labels
   plt.title(filename)

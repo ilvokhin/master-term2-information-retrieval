@@ -29,7 +29,7 @@ def stupid_params_search(pos, vals):
           best_rho = rho
           best_b = b
           min_err = cur_err
-  return best_p, best_rho, best_b, min_err
+  return (best_p, best_rho, best_b, min_err)
 
 def make_plot(vals, filename, start, end, x_name, y_name):
   fig = plt.figure(1)
