@@ -19,6 +19,26 @@ def time_exec(func):
     return out
   return wrapper
 
+def count_calls(func):
+  def wrapper(*args, **kwargs):
+    wrapper.call_counter += 1
+    return func(*args, **kwargs)
+  wrapper.call_counter = 0
+  wrapper.__name__ = func.__name__
+  return wrapper
+
+def count_calls_other(other):
+  def decorator(func):
+    def wrapper(*args, **kwargs):
+      other.call_counter = 0
+      try:
+        return func(*args, **kwargs)
+      finally:
+        print '%s was called %d times' % (other.__name__, other.call_counter)
+    wrapper.__name__ = func.__name__
+    return wrapper
+  return decorator
+
 def stem(token):
   if not hasattr(stem, 'stemmer'):
     stem.stemmer = RussianStemmer()

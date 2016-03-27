@@ -8,23 +8,38 @@ import argparse
 from common import make_term
 from common import time_exec
 from common import load_index
+from common import count_calls
 from common import DOCS_CNT_KEY
+from common import count_calls_other
 
 def make_and(docs_x, docs_y, index):
   return sorted(set(docs_x).intersection(docs_y))
 
+@count_calls
+def less(x, y):
+  return x < y
+
+@count_calls
+def equal(x, y):
+  return x == y
+
+def le(x, y):
+  return less(x, y) or equal(x, y)
+
+@count_calls_other(less)
+@count_calls_other(equal)
 def make_and_simple(docs_x, docs_y, index):
   x = 0
   y = 0
   out = []
-  while x < len(docs_x) and y < len(docs_y):
-    if docs_x[x] == docs_y[y]:
+  while less(x, len(docs_x)) and less(y, len(docs_y)):
+    if equal(docs_x[x], docs_y[y]):
       out.append(docs_x[x])
       x += 1
       y += 1
-    elif docs_x[x] < docs_y[y]:
+    elif less(docs_x[x], docs_y[y]):
       x += 1
-    elif docs_x[x] > docs_y[y]:
+    else:
       y += 1
   return out
 
@@ -41,24 +56,26 @@ def skip(docs, pos):
   period = make_period(docs)
   return min(len(docs) - 1, pos + period)
 
+@count_calls_other(less)
+@count_calls_other(equal)
 def make_and_skips(docs_x, docs_y, index):
   x = 0
   y = 0
   out = []
-  while x < len(docs_x) and y < len(docs_y):
-    if docs_x[x] == docs_y[y]:
+  while less(x, len(docs_x)) and less(y, len(docs_y)):
+    if equal(docs_x[x], docs_y[y]):
       out.append(docs_x[x])
       x += 1
       y += 1
-    elif docs_x[x] < docs_y[y]:
-      if has_skip(docs_x, x) and docs_x[skip(docs_x, x)] <= docs_y[y]:
-        while has_skip(docs_x, x) and docs_x[skip(docs_x, x)] <= docs_y[y]:
+    elif less(docs_x[x], docs_y[y]):
+      if has_skip(docs_x, x) and le(docs_x[skip(docs_x, x)], docs_y[y]):
+        while has_skip(docs_x, x) and le(docs_x[skip(docs_x, x)], docs_y[y]):
           x = skip(docs_x, x)
       else:
         x += 1
-    elif docs_x[x] > docs_y[y]:
-      if has_skip(docs_y, y) and docs_y[skip(docs_y, y)] <= docs_x[x]:
-        while has_skip(docs_y, y) and docs_y[skip(docs_y, y)] <= docs_x[x]:
+    else:
+      if has_skip(docs_y, y) and le(docs_y[skip(docs_y, y)], docs_x[x]):
+        while has_skip(docs_y, y) and le(docs_y[skip(docs_y, y)], docs_x[x]):
           y = skip(docs_y, y)
       else:
         y += 1
