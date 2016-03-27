@@ -1,0 +1,17 @@
+(ir) [d@gate ir]$ du -sh karenina.stem.pickle.gz 
+628K    karenina.stem.pickle.gz
+
+(ir) [d@gate ir]$ du -sh karenina.stem.bigrams.pickle.gz 
+3.8M    karenina.stem.bigrams.pickle.gz
+
+(ir) [d@gate ir]$ echo '"счастливые семьи похожи"' |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz
+load_index takes 10.808315 sec
+make_query takes 0.001049 sec
+query '"счастливые семьи похожи"': found 1 docs, [0]
+
+(ir) [d@gate ir]$ echo '"счастливые семьи похожи" and несчастлива' |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz -a default
+load_index takes 9.810761 sec
+make_query takes 0.001512 sec
+query '"счастливые семьи похожи" and несчастлива': found 1 docs, [0]

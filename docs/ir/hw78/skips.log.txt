@@ -1,0 +1,47 @@
+(ir) [d@gate ir]$ echo "и and анна" |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz -a simple
+load_index takes 10.240932 sec
+equal was called 4440 times
+less was called 12821 times
+make_query takes 0.014788 sec
+query "и and анна": found 500 docs
+
+(ir) [d@gate ir]$ echo "и and анна" |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz -a skips
+load_index takes 10.034718 sec
+equal was called 3719 times
+less was called 10555 times
+make_query takes 0.016027 sec
+query "и and анна": found 500 docs
+
+(ir) [d@gate ir]$ echo "и and он" |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz -a simple
+load_index takes 10.536415 sec
+equal was called 5486 times
+less was called 13500 times
+make_query takes 0.021490 sec
+query "и and он": found 2959 docs
+
+(ir) [d@gate ir]$ echo "и and он" |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz -a skips
+load_index takes 10.614571 sec
+equal was called 5534 times
+less was called 13548 times
+make_query takes 0.021051 sec
+query "и and он": found 2959 docs
+
+(ir) [d@gate ir]$ echo "тебя and вот" |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz -a simple
+load_index takes 10.886408 sec
+equal was called 645 times
+less was called 1904 times
+make_query takes 0.003709 sec
+query "тебя and вот": found 32 docs
+
+(ir) [d@gate ir]$ echo "тебя and вот" |\
+> python -u boolean_search.py -i karenina.stem.bigrams.pickle.gz -a skips
+load_index takes 10.417161 sec
+equal was called 678 times
+less was called 1937 times
+make_query takes 0.004858 sec
+query "тебя and вот": found 32 docs
