@@ -8,6 +8,7 @@ import cPickle as pickle
 from nltk.stem.snowball import RussianStemmer
 
 DOCS_CNT_KEY = '__docs_cnt'
+NGRAMS_DELIM = '_'
 
 def time_exec(func):
   def wrapper(*args, **kwargs):
@@ -52,6 +53,9 @@ def make_term(token, need_stemming = True):
     return stem(normalize(token))
   else:
     return normalize(token)
+
+def make_term_no_stem(token):
+  return make_term(token, False)
 
 def load_index(filename):
   with gzip.open(filename, 'rb') as f:

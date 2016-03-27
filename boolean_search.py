@@ -10,6 +10,7 @@ from common import time_exec
 from common import load_index
 from common import count_calls
 from common import DOCS_CNT_KEY
+from common import NGRAMS_DELIM
 from common import count_calls_other
 
 def make_and(docs_x, docs_y, index):
@@ -130,7 +131,10 @@ class EvalQuery(ast.NodeTransformer):
     return new_node
 
   def visit_Str(self, node):
-    term = make_term(node.s, False).decode('utf8')
+    term = make_term(node.s.decode('utf8'), False)
+    if len(term.split(NGRAMS_DELIM)) == 1:
+      # if term is't bigram, we should stem it
+      term = make_term(term, True)
     node.docs = self.index[term]
     node.weight = len(node.docs)
     return node
@@ -148,9 +152,25 @@ def quote_terms(query):
   # so some hack here: wrap search terms in quotes
   return re.sub('((?![and|or|not])\w+)', r"'\1'", query, flags = re.UNICODE)
 
+def parse_cite(query):
+  m = re.search('"(.*?)"', query)
+  if not m:
+    return query
+  cite_groups = m.groups()
+  replace = []
+  for cite in cite_groups:
+    operands = []
+    tokens = cite.split()
+    for pos in xrange(len(tokens) - 1):
+      token_a, token_b = tokens[pos], tokens[pos + 1]
+      operands.append(token_a + NGRAMS_DELIM + token_b)
+    repl = ' and '.join(operands)
+    query = query.replace('"' + cite  + '"', repl)
+  return query
+
 @time_exec
 def make_query(query, index, and_algo):
-  tree = ast.parse(quote_terms(query.decode('utf8')))
+  tree = ast.parse(quote_terms(parse_cite(query.decode('utf8'))))
   docs = eval_query_tree(tree, index, and_algo)
   return docs
 

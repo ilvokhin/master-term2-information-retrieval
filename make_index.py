@@ -11,7 +11,9 @@ import cPickle as pickle
 from common import make_term
 from common import time_exec
 from common import DOCS_CNT_KEY
+from common import NGRAMS_DELIM
 from collections import defaultdict
+from common import make_term_no_stem
 
 PUNCT = set(list(string.punctuation) + ['--', '...', '``', '\'\''])
 
@@ -30,6 +32,9 @@ def collect_stat_per_doc(stat, tokens):
   stat['avg_tokens_len'] += sum([len(tok) for tok in tokens])
   stat['tokens'] += len(tokens)
 
+def collect_bigram_stat_per_doc(stat, tokens):
+  stat['bigrams'] += ((len(tokens) - 1) * len(tokens)) / 2.
+
 def collect_stat_final(stat, docs, index):
   stat['docs'] = len(docs)
   stat['terms'] = len(index)
@@ -37,7 +42,7 @@ def collect_stat_final(stat, docs, index):
   stat['avg_terms_len'] = 1. * sum([len(term) for term in index]) / len(index)
 
 @time_exec
-def make_index(src):
+def make_index(src, bigrams = False):
   stat = defaultdict(float)
   index = defaultdict(list)
   docs = parse_file(src).find_all('dd')
@@ -47,6 +52,16 @@ def make_index(src):
     terms = filter(lambda t: not t in PUNCT, map(make_term, tokens))
     for term in set(terms):
       index[term].append(doc_id)
+
+    if bigrams:
+      terms_no_stem = filter(lambda t: not t in PUNCT, \
+        map(make_term_no_stem, tokens))
+      for pos in xrange(len(terms_no_stem) - 1):
+        term_a, term_b = terms_no_stem[pos], terms_no_stem[pos + 1]
+        term = term_a + NGRAMS_DELIM + term_b
+        index[term].append(doc_id)
+      collect_bigram_stat_per_doc(stat, terms_no_stem)
+
     collect_stat_per_doc(stat, tokens)
   # save max doc id for quick not in boolean search
   index[DOCS_CNT_KEY] = len(docs)
@@ -63,11 +78,13 @@ def parse_args():
   parser = argparse.ArgumentParser(description = 'Make index from raw shtml file')
   parser.add_argument('-s', '--src', help = 'source file path', required  = True)
   parser.add_argument('-d', '--dst', help = 'destination file path', required = True)
+  parser.add_argument('-b', '--bigrams', help = 'add bigrams to index', \
+    action = 'store_true')
   return parser.parse_args()
 
 def main():
   args = parse_args()
-  index = make_index(args.src)
+  index = make_index(args.src, args.bigrams)
   save_index(index, args.dst)
 
 if __name__ == "__main__":
