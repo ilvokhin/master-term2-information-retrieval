@@ -14,6 +14,7 @@ from common import DOCS_CNT_KEY
 from common import NGRAMS_DELIM
 from collections import defaultdict
 from common import make_term_no_stem
+from common import make_defaultdict
 
 PUNCT = set(list(string.punctuation) + ['--', '...', '``', '\'\''])
 
@@ -70,6 +71,25 @@ def make_index(src, bigrams = False):
   return index
 
 @time_exec
+def make_coordinate_index(src):
+  stat = defaultdict(float)
+  index = defaultdict(make_defaultdict)
+  docs = parse_file(src).find_all('dd')
+
+  for doc_id, doc in enumerate(docs):
+    tokens = nltk.word_tokenize(doc.text)
+    terms = filter(lambda t: not t in PUNCT, map(make_term, tokens))
+    for term_id, term in enumerate(terms):
+      index[term][doc_id].append(term_id)
+    collect_stat_per_doc(stat, tokens)
+
+  # save max doc id for quick not in boolean search
+  index[DOCS_CNT_KEY] = len(docs)
+  collect_stat_final(stat, docs, index)
+  print_stat(stat)
+  return index
+
+@time_exec
 def save_index(index, dst):
   with gzip.open(dst, 'wb') as f:
     pickle.dump(index, f)
@@ -78,13 +98,17 @@ def parse_args():
   parser = argparse.ArgumentParser(description = 'Make index from raw shtml file')
   parser.add_argument('-s', '--src', help = 'source file path', required  = True)
   parser.add_argument('-d', '--dst', help = 'destination file path', required = True)
-  parser.add_argument('-b', '--bigrams', help = 'add bigrams to index', \
-    action = 'store_true')
+  parser.add_argument('-i', '--index', help = 'index type', \
+    choices = ['default', 'bigrams', 'coordinates'], default = 'default')
   return parser.parse_args()
 
 def main():
   args = parse_args()
-  index = make_index(args.src, args.bigrams)
+  if args.index in ['default', 'bigrams']:
+    index = make_index(args.src, args.index == 'bigrams')
+  elif args.index == 'coordinates':
+    index = make_coordinate_index(args.src)
+
   save_index(index, args.dst)
 
 if __name__ == "__main__":

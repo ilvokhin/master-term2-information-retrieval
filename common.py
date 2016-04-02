@@ -5,6 +5,7 @@ import sys
 import gzip
 import timeit
 import cPickle as pickle
+from collections import defaultdict
 from nltk.stem.snowball import RussianStemmer
 
 DOCS_CNT_KEY = '__docs_cnt'
@@ -60,3 +61,6 @@ def make_term_no_stem(token):
 def load_index(filename):
   with gzip.open(filename, 'rb') as f:
     return pickle.load(f)
+
+def make_defaultdict():
+  return defaultdict(list)
