@@ -73,18 +73,25 @@ def make_index(src, bigrams = False):
 @time_exec
 def make_coordinate_index(src):
   stat = defaultdict(float)
-  index = defaultdict(make_defaultdict)
+  tmp_index = defaultdict(make_defaultdict)
   docs = parse_file(src).find_all('dd')
 
   for doc_id, doc in enumerate(docs):
     tokens = nltk.word_tokenize(doc.text)
-    terms = filter(lambda t: not t in PUNCT, map(make_term, tokens))
-    for term_id, term in enumerate(terms):
-      index[term][doc_id].append(term_id)
+    terms = filter(lambda t: not t in PUNCT, map(make_term_no_stem, tokens))
+    for term_pos, term in enumerate(terms):
+      tmp_index[term][doc_id].append(term_pos)
     collect_stat_per_doc(stat, tokens)
 
-  # save max doc id for quick not in boolean search
-  index[DOCS_CNT_KEY] = len(docs)
+  index = defaultdict(list)
+
+  for term in tmp_index:
+    term_docs = tmp_index[term]
+    postings = []
+    for doc_id in sorted(term_docs.keys()):
+      postings.append((doc_id, term_docs[doc_id]))
+    index[term] = postings
+
   collect_stat_final(stat, docs, index)
   print_stat(stat)
   return index
