@@ -55,12 +55,6 @@ int compress(const int *in_docs, const int in_size, unsigned char *out_docs,
   int *deltas = (int*) malloc(sizeof(int) * in_size);
   make_delta(in_docs, in_size, deltas);
 
-  printf("deltas:\n");
-  for(int i = 0; i < in_size; i++) {
-    printf("%d ", deltas[i]);
-  }
-  printf("\n");
-
   for(int i = 0; i < in_size; i++) {
     int delta = deltas[i];
     if(delta == 0) {
@@ -73,7 +67,6 @@ int compress(const int *in_docs, const int in_size, unsigned char *out_docs,
        * as continuation flag.
        */
       unsigned char delta_part = (((1U << 8) - 1) & delta) | (1U << 7);
-      printf("add delta part: %d from (%d)\n", (int) delta_part, in_docs[i]);
       out_docs[records_cnt++] = delta_part;
       delta >>= 7;
       if(records_cnt == out_size) {
@@ -83,11 +76,6 @@ int compress(const int *in_docs, const int in_size, unsigned char *out_docs,
     }
     out_docs[records_cnt - 1] &= ~(1U << 7);
   }
-
-  printf("compressed deltas:\n");
-  for(int i = 0; i < records_cnt; i++)
-    printf("%d ", out_docs[i]);
-  printf("\n");
 
   free(deltas);
   return records_cnt;
@@ -144,7 +132,12 @@ void decompress_postings(FILE *src, FILE *dst)
     posting.docs = (unsigned char*) malloc(sizeof(unsigned char) * posting.size);
 
     fread(posting.docs, sizeof(posting.docs[0]), posting.size, src);
-
+   /*
+    * It looks little bit messy, can't figure out how to write it better.
+    * We need to do the all packing steps in in reverse order.
+    * And we must shift delta_part, because we write groups of bits
+    * in reverse order (from small to large one).
+    */
     for(int i = 0; i < posting.size; ) {
       int delta = 0;
       int shift = 1;
@@ -152,18 +145,12 @@ void decompress_postings(FILE *src, FILE *dst)
       int go_on = delta_part & (1U << 7);
       delta_part &= ~(1U << 7);
       while(go_on) {
-        //delta |= (delta_part & ~(1U << 7));
-        //delta <<= 7;
-        //printf("%d\n", delta_part);
         delta |= delta_part;
         delta_part = (((1U << 8) - 1) & posting.docs[++i]);
-        //printf("original: %d\n", delta_part);
         go_on = delta_part & (1U << 7);
         delta_part = ((delta_part & ~(1U << 7)) << 7 * shift);
         shift++;
-        //printf("updated: %d\n", delta_part);
       }
-      //printf("%d\n", delta_part);
       delta |= delta_part;
       prev_doc_id += delta;
       docs[docs_cnt++] = prev_doc_id;
@@ -173,7 +160,7 @@ void decompress_postings(FILE *src, FILE *dst)
     fprintf(dst, "%d\t%d", posting.term_id, docs_cnt);
     for(int i = 0; i < docs_cnt; i++)
       fprintf(dst, "\t%d", docs[i]);
-    printf("\n");
+    fprintf(dst, "\n");
 
     free(posting.docs);
     free(docs);
