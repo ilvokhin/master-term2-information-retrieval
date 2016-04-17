@@ -134,7 +134,7 @@ void decompress_postings(FILE *src, FILE *dst)
     fread(posting.docs, sizeof(posting.docs[0]), posting.size, src);
    /*
     * It looks little bit messy, can't figure out how to write it better.
-    * We need to do the all packing steps in in reverse order.
+    * We need to do the all packing steps in reverse order.
     * And we must shift delta_part, because we write groups of bits
     * in reverse order (from small to large one).
     */
