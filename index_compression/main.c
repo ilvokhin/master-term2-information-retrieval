@@ -130,9 +130,59 @@ void make_compressed_postings(FILE *src, FILE *dst)
   }
 }
 
+void decompress_postings(FILE *src, FILE *dst)
+{
+  struct posting_compressed posting;
+
+  while(fread(&posting.term_id, sizeof(posting.term_id), 1, src) != 0) {
+    int prev_doc_id = 0;
+    int docs_cnt = 0;
+
+    fread(&posting.size, sizeof(posting.size), 1, src);
+    
+    int *docs = (int*) malloc(sizeof(int) * posting.size);
+    posting.docs = (unsigned char*) malloc(sizeof(unsigned char) * posting.size);
+
+    fread(posting.docs, sizeof(posting.docs[0]), posting.size, src);
+
+    for(int i = 0; i < posting.size; ) {
+      int delta = 0;
+      int shift = 1;
+      unsigned int delta_part = (((1U << 8) - 1) & posting.docs[i]);
+      int go_on = delta_part & (1U << 7);
+      delta_part &= ~(1U << 7);
+      while(go_on) {
+        //delta |= (delta_part & ~(1U << 7));
+        //delta <<= 7;
+        //printf("%d\n", delta_part);
+        delta |= delta_part;
+        delta_part = (((1U << 8) - 1) & posting.docs[++i]);
+        //printf("original: %d\n", delta_part);
+        go_on = delta_part & (1U << 7);
+        delta_part = ((delta_part & ~(1U << 7)) << 7 * shift);
+        shift++;
+        //printf("updated: %d\n", delta_part);
+      }
+      //printf("%d\n", delta_part);
+      delta |= delta_part;
+      prev_doc_id += delta;
+      docs[docs_cnt++] = prev_doc_id;
+      i++;
+    }
+
+    fprintf(dst, "%d\t%d", posting.term_id, docs_cnt);
+    for(int i = 0; i < docs_cnt; i++)
+      fprintf(dst, "\t%d", docs[i]);
+    printf("\n");
+
+    free(posting.docs);
+    free(docs);
+  }
+}
+
 void usage(char *bin_name)
 {
-  fprintf(stderr, "usage %s: easy | compressed\n", bin_name);
+  fprintf(stderr, "usage %s: easy | compress | decompress\n", bin_name);
 }
 
 int main(int argc, char* argv[])
@@ -153,12 +203,20 @@ int main(int argc, char* argv[])
 
   if(strcmp(argv[1], "easy") == 0)
     make_easy_postings(stdin, binary_dst);
-  else if(strcmp(argv[1], "compressed") == 0)
+  else if(strcmp(argv[1], "compress") == 0)
     make_compressed_postings(stdin, binary_dst);
-  else {
+  else if(strcmp(argv[1], "decompress") == 0) {
+    fclose(binary_dst);
+    if((binary_dst = fopen("test2.data", "rb")) == NULL) {
+      perror("Error");
+      exit(EXIT_FAILURE);
+    }
+    decompress_postings(binary_dst, stdout);
+  } else {
     usage(argv[0]);
     exit(EXIT_FAILURE);
   }
 
+  fclose(binary_dst);
   exit(EXIT_SUCCESS);
 }
