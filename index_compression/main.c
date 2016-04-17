@@ -17,7 +17,7 @@ struct posting_easy {
 struct posting_compressed {
   int term_id;
   int size;
-  unsigned char* docs;
+  unsigned char *docs;
 };
 
 void make_easy_postings(FILE *src, FILE *dst)
