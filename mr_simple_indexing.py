@@ -25,8 +25,8 @@ class MRIndexer(mrjob.job.MRJob):
       self.increment_counter('Stat', 'empty value', 1)
 
   def reducer(self, key, values):
-    vals = sorted(list(set(values)))
-    yield None, '\t'.join([key, str(len(vals))] + vals).encode('utf8')
+    vals = sorted(list(set(map(int, values))))
+    yield None, '\t'.join([key, str(len(vals))] + map(str, vals)).encode('utf8')
 
 def main():
   MRIndexer.run()

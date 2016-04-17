@@ -17,10 +17,11 @@ struct posting_easy {
 struct posting_compressed {
   int term_id;
   int size;
-  char* docs;
+  unsigned char* docs;
 };
 
-int make_easy_postings(FILE *src, FILE *dst) {
+void make_easy_postings(FILE *src, FILE *dst)
+{
   wchar_t term_buf[MAX_TERM_LEN];
   int term_id = 0;
   struct posting_easy posting;
@@ -35,18 +36,102 @@ int make_easy_postings(FILE *src, FILE *dst) {
     fwrite(&posting.size, sizeof(posting.size), 1, dst);
     fwrite(posting.docs, sizeof(posting.docs[0]), posting.size, dst);
 
-    free(posting.docs);
     term_id++;
+    free(posting.docs);
+  }
+}
+
+void make_delta(const int *in_docs, const int size, int *deltas)
+{
+  deltas[0] = in_docs[0];
+  for(int i = 1; i < size; i++)
+    deltas[i] = in_docs[i] - in_docs[i - 1];
+}
+
+int compress(const int *in_docs, const int in_size, unsigned char *out_docs,
+  const int out_size)
+{
+  int records_cnt = 0;
+  int *deltas = (int*) malloc(sizeof(int) * in_size);
+  make_delta(in_docs, in_size, deltas);
+
+  printf("deltas:\n");
+  for(int i = 0; i < in_size; i++) {
+    printf("%d ", deltas[i]);
+  }
+  printf("\n");
+
+  for(int i = 0; i < in_size; i++) {
+    int delta = deltas[i];
+    if(delta == 0) {
+      out_docs[records_cnt++] = 0;
+      continue;
+    }
+    while(delta) {
+      /*
+       * Get last seven bits from delta + most significant bit
+       * as continuation flag.
+       */
+      unsigned char delta_part = (((1U << 8) - 1) & delta) | (1U << 7);
+      printf("add delta part: %d from (%d)\n", (int) delta_part, in_docs[i]);
+      out_docs[records_cnt++] = delta_part;
+      delta >>= 7;
+      if(records_cnt == out_size) {
+        free(deltas);
+        return -1;
+      }
+    }
+    out_docs[records_cnt - 1] &= ~(1U << 7);
   }
 
-  return 0;
+  printf("compressed deltas:\n");
+  for(int i = 0; i < records_cnt; i++)
+    printf("%d ", out_docs[i]);
+  printf("\n");
+
+  free(deltas);
+  return records_cnt;
 }
 
-int make_compressed_postings(FILE *src, FILE *dst) {
-  return 0;
+void make_compressed_postings(FILE *src, FILE *dst)
+{
+  wchar_t term_buf[MAX_TERM_LEN];
+  int term_id = 0;
+  int docs_cnt = 0;
+  struct posting_compressed posting;
+
+  while(fwscanf(src, L"%ls\t%d", term_buf, &docs_cnt) == 2) {
+    int *docs = (int *) malloc(sizeof(int) * docs_cnt);
+    for(int i = 0; i < docs_cnt; i++)
+      fwscanf(src, L"%d", &docs[i]);
+
+   /*
+    * Not a bug here: alloc a little bit more memory, that we need
+    * to store all input *ints*. In case if we get a bad compression.
+    */
+    int out_max_size = sizeof(int) * docs_cnt * 2;
+    posting.docs = (unsigned char *) malloc(sizeof(unsigned char) * out_max_size);
+    posting.size = compress(docs, docs_cnt, posting.docs,
+      out_max_size / sizeof(unsigned char));
+
+    if(posting.size == -1) {
+      fprintf(stderr, "Error: not enough memory for compressed data "
+                      "for term: %d\n", term_id);
+      exit(1);
+    }
+
+    fwrite(&term_id, sizeof(term_id), 1, dst);
+    fwrite(&posting.size, sizeof(posting.size), 1, dst);
+    fwrite(posting.docs, sizeof(posting.docs[0]), posting.size, dst);
+
+    term_id++;
+    free(docs);
+    free(posting.docs);
+  }
 }
 
-void usage(char *bin_name) {
+void usage(char *bin_name)
+{
   fprintf(stderr, "usage %s: easy | compressed\n", bin_name);
 }
 
@@ -57,7 +142,7 @@ int main(int argc, char* argv[])
     exit(EXIT_FAILURE);
   }
 
-  // quick locale fix
+  /* quick locale fix */
   setlocale(LC_CTYPE, "en_US.UTF-8");
 
   FILE *binary_dst = NULL;
