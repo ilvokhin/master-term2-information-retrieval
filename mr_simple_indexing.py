@@ -26,7 +26,7 @@ class MRIndexer(mrjob.job.MRJob):
 
   def reducer(self, key, values):
     vals = sorted(list(set(values)))
-    yield None, '\t'.join([key] + vals).encode('utf8')
+    yield None, '\t'.join([key, str(len(vals))] + vals).encode('utf8')
 
 def main():
   MRIndexer.run()
