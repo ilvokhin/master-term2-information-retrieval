@@ -1,0 +1,100 @@
+No configs found; falling back on auto-configuration
+Looking for hadoop binary in /home/hadoop/hadoop-2.7.1/bin...
+Found hadoop binary: /home/hadoop/hadoop-2.7.1/bin/hadoop
+Creating temp directory /tmp/mr_simple_indexing.hadoop.20160416.184954.118913
+Using Hadoop version 2.7.1
+Copying local files to hdfs:///user/hadoop/tmp/mrjob/mr_simple_indexing.hadoop.20160416.184954.118913/files/...
+Looking for Hadoop streaming jar in /home/hadoop/hadoop-2.7.1...
+Found Hadoop streaming jar: /home/hadoop/hadoop-2.7.1/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar
+Detected hadoop configuration property names that do not match hadoop version 2.7.1:
+They have been translated as follows
+ mapred.job.name: mapreduce.job.name
+mapred.output.compress: mapreduce.output.fileoutputformat.compress
+mapred.output.compression.codec: mapreduce.output.fileoutputformat.compress.codec
+Running step 1 of 1...
+  packageJobJar: [/tmp/hadoop-unjar7090882980151421359/] [] /tmp/streamjob8719742951357616345.jar tmpDir=null
+  Connecting to ResourceManager at /0.0.0.0:8032
+  Connecting to ResourceManager at /0.0.0.0:8032
+  Total input paths to process : 1
+  number of splits:2
+  mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+  mapred.output.compression.codec is deprecated. Instead, use mapreduce.output.fileoutputformat.compress.codec
+  mapred.job.name is deprecated. Instead, use mapreduce.job.name
+  Submitting tokens for job: job_1460831320458_0002
+  Submitted application application_1460831320458_0002
+  The url to track the job: http://localhost:8088/proxy/application_1460831320458_0002/
+  Running job: job_1460831320458_0002
+  Job job_1460831320458_0002 running in uber mode : false
+   map 0% reduce 0%
+   map 6% reduce 0%
+   map 20% reduce 0%
+   map 42% reduce 0%
+   map 72% reduce 0%
+   map 100% reduce 0%
+   map 100% reduce 80%
+   map 100% reduce 96%
+   map 100% reduce 100%
+  Job job_1460831320458_0002 completed successfully
+  Output directory: hdfs:///user/hadoop/index
+Counters: 52
+	File Input Format Counters 
+		Bytes Read=3111846
+	File Output Format Counters 
+		Bytes Written=612102
+	File System Counters
+		FILE: Number of bytes read=11224780
+		FILE: Number of bytes written=22810456
+		FILE: Number of large read operations=0
+		FILE: Number of read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=3112052
+		HDFS: Number of bytes written=612102
+		HDFS: Number of large read operations=0
+		HDFS: Number of read operations=9
+		HDFS: Number of write operations=2
+	Job Counters 
+		Data-local map tasks=2
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Total megabyte-seconds taken by all map tasks=76721152
+		Total megabyte-seconds taken by all reduce tasks=22932480
+		Total time spent by all map tasks (ms)=74923
+		Total time spent by all maps in occupied slots (ms)=74923
+		Total time spent by all reduce tasks (ms)=22395
+		Total time spent by all reduces in occupied slots (ms)=22395
+		Total vcore-seconds taken by all map tasks=74923
+		Total vcore-seconds taken by all reduce tasks=22395
+	Map-Reduce Framework
+		CPU time spent (ms)=21230
+		Combine input records=0
+		Combine output records=0
+		Failed Shuffles=0
+		GC time elapsed (ms)=3346
+		Input split bytes=206
+		Map input records=7798
+		Map output bytes=10685625
+		Map output materialized bytes=11224786
+		Map output records=269556
+		Merged Map outputs=2
+		Physical memory (bytes) snapshot=244789248
+		Reduce input groups=33650
+		Reduce input records=269556
+		Reduce output records=33650
+		Reduce shuffle bytes=11224786
+		Shuffled Maps =2
+		Spilled Records=539112
+		Total committed heap usage (bytes)=259588096
+		Virtual memory (bytes) snapshot=2361995264
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	Stat
+		empty value=12
+		terms=269556
+		tokens=280374
+Removing HDFS temp directory hdfs:///user/hadoop/tmp/mrjob/mr_simple_indexing.hadoop.20160416.184954.118913...
+Removing temp directory /tmp/mr_simple_indexing.hadoop.20160416.184954.118913...
