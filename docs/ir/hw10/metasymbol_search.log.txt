@@ -1,0 +1,35 @@
+(ir) [d@gate ir]$ echo "анна" |\
+> python metasymbol_search.py -i karenina.pickle.gz -t karenina.trie.pickle.gz
+load_index takes 3.020855 sec
+load_index takes 8.457878 sec
+query "анна": found 443 docs
+found 1 terms: [ анна ]
+
+(ir) [d@gate ir]$ echo "анн*" |\
+> python metasymbol_search.py -i karenina.pickle.gz -t karenina.trie.pickle.gz
+load_index takes 2.990718 sec
+load_index takes 8.346802 sec
+query "анн*": found 683 docs
+found 14 terms: [ аннушка, аннушку, аннушке, аннушки, аннушкой, анну, анн, анны, 
+  анна, анна., анне, аннина, анной, анною ]
+
+echo "*нна" |\
+> python metasymbol_search.py -i karenina.pickle.gz -t karenina.trie.pickle.gz
+load_index takes 3.008942 sec
+load_index takes 9.320803 sec
+query "*нна": found 459 docs
+found 13 terms: [ ганна, анна, иоанна, распущенна, возвышенна, свойственна, 
+  естественна, единственна, казенна, бессмысленна, беременна, длинна, невинна ]
+
+(ir) [d@gate ir]$ echo "а*а" |\
+> python metasymbol_search.py -i karenina.pickle.gz -t karenina.trie.pickle.gz
+load_index takes 3.185284 sec
+load_index takes 8.644200 sec
+query "а*а": found 1796 docs
+found 55 terms: [ а, а-а, а-а-а, аpкадьича, аа, ааа, абажура, августа, авеньева, 
+автора, ага, агентства, адама, адвоката, адвокатура, адъютанта, аккомпанемента, 
+аккомпанировала, акта, актриса, акушера, акушерка, александра, александрова, александровича, 
+александровна, алеша, алешки-дурачка, алешку-дурачка, алешу-дурачка, альбома, амвона, ангела, 
+англичанина, англичанка, андреевна, анета, аничкина, анна, аннина, аннушка, антинигилизма, 
+антракта, апостола, аппетита, аренда, аркадьевна, аркадьича, артельщика, артиллериста, 
+архитектора, аршина, атласа, атмосфера, ахнула ]
