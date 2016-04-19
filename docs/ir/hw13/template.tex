@@ -1,0 +1,55 @@
+\documentclass[12pt]{article}
+
+\usepackage{fullpage}
+\usepackage{multicol, multirow}
+\usepackage{tabularx}
+\usepackage{standalone}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\newcommand{\StudentName}{Ильвохин Дмитрий}
+\newcommand{\Group}{1O-106М}
+\newcommand{\CourseName}{Информационный поиск}
+\newcommand{\LabNum}{13}
+\newcommand{\Subject}{Сжатие индекса}
+\newcommand{\PrepName}{Калинин А.\,Л.}
+
+\begin{document}
+
+\lstset
+{
+        language=Python,
+        basicstyle=\footnotesize,% basic font setting
+        extendedchars=\true
+}
+
+\begin{flushright}
+\Large{
+	\CourseName \\
+	Лабораторная работа №\,\LabNum \\
+	<<\Subject>> \\
+  \StudentName, \Group \\
+  Дата: \line(1,0){150} \\
+  Подпись: \line(1,0){150} \\
+}
+\end{flushright}
+
+\subsection*{Задание}
+Реализовать сжатие индекса с помощью variable byte кодирования.
+
+\subsection*{Исходный код}
+\lstinputlisting[language=C]{../../../index_compression/main.c}
+
+\subsection*{Результаты}
+\lstinputlisting[language=Bash]{index_compression.log.txt}
+
+\subsection*{Выводы}
+При использовании variable byte кодирования индекс сжался в два раза, что примерно
+совпадает с ожиданиями. Но можно улучшить результаты сжав индекс еще и gzip'ом.
+
+\end{document}
+
