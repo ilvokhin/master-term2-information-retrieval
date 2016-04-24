@@ -1,0 +1,57 @@
+\documentclass[12pt]{article}
+
+\usepackage{fullpage}
+\usepackage{multicol, multirow}
+\usepackage{tabularx}
+\usepackage{standalone}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\newcommand{\StudentName}{Ильвохин Дмитрий}
+\newcommand{\Group}{1O-106М}
+\newcommand{\CourseName}{Информационный поиск}
+\newcommand{\LabNum}{9}
+\newcommand{\Subject}{Координатный индекс}
+\newcommand{\PrepName}{Калинин А.\,Л.}
+
+\begin{document}
+
+\lstset
+{
+        language=Python,
+        basicstyle=\footnotesize,% basic font setting
+        extendedchars=\true
+}
+
+\begin{flushright}
+\Large{
+	\CourseName \\
+	Лабораторная работа №\,\LabNum \\
+	<<\Subject>> \\
+  \StudentName, \Group \\
+  Дата: \line(1,0){150} \\
+  Подпись: \line(1,0){150} \\
+}
+\end{flushright}
+
+\subsection*{Задание}
+Построить координатный индекс.
+Сравнить размер получившегося индекса с индексом биграмм.
+
+\subsection*{Исходный код}
+\lstinputlisting[caption={Построение индекса}]{../../../make_index.py}
+\lstinputlisting[caption={Цитатный поиск}]{../../../cite_coordinate_search.py}
+
+\subsection*{Результаты}
+\lstinputlisting[language=Bash]{cite_index.log.txt}
+
+\subsection*{Выводы}
+Координатный индекс получился в 1.5 раза меньше биграммного,
+но в 3 раза больше индекса без координат.
+
+\end{document}
+
