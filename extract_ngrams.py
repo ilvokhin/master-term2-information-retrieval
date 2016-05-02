@@ -3,9 +3,9 @@
 
 import sys
 import string
+import argparse
 from collections import Counter
 
-N = 2
 PUNCT = set(list(string.punctuation))
 
 
@@ -26,10 +26,17 @@ def extraxt_ngrams(line, n):
     return ngrams
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Extract ngrams')
+    parser.add_argument('-n', '--ngrams', required=True, type=int)
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     cnt = Counter()
     for line in sys.stdin:
-        ngrams = extraxt_ngrams(line.strip().decode('utf8'), N)
+        ngrams = extraxt_ngrams(line.strip().decode('utf8'), args.ngrams)
         for ngram in ngrams:
             key = ' '.join(ngram)
             cnt[key] += 1
