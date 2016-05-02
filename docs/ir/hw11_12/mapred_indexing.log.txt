@@ -1,3 +1,10 @@
+[hadoop@hadoop master-term2-information-retrieval]$ python mr_simple_indexing.py \
+> -r hadoop hdfs:///user/hadoop/karenina_nums.txt \
+> -o /user/hadoop/index \
+> --jobconf mapred.output.compress=true  \
+> --jobconf mapred.output.compression.codec=org.apache.hadoop.io.compress.GzipCodec \
+> --jobconf mapred.job.name="mr indexer"
+
 No configs found; falling back on auto-configuration
 Looking for hadoop binary in /home/hadoop/hadoop-2.7.1/bin...
 Found hadoop binary: /home/hadoop/hadoop-2.7.1/bin/hadoop

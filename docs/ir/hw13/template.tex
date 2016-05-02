@@ -14,8 +14,8 @@
 \newcommand{\StudentName}{Ильвохин Дмитрий}
 \newcommand{\Group}{1O-106М}
 \newcommand{\CourseName}{Информационный поиск}
-\newcommand{\LabNum}{11-12}
-\newcommand{\Subject}{Распределенное индексирование}
+\newcommand{\LabNum}{13}
+\newcommand{\Subject}{Сжатие индекса}
 \newcommand{\PrepName}{Калинин А.\,Л.}
 
 \begin{document}
@@ -39,19 +39,17 @@
 \end{flushright}
 
 \subsection*{Задание}
-Реализовать распределенное индексирование с помощью модели
-распределенных вычислений MapReduce.
+Реализовать сжатие индекса с помощью variable byte кодирования.
 
 \subsection*{Исходный код}
-\lstinputlisting{../../../mr_simple_indexing.py}
+\lstinputlisting[language=C]{../../../index_compression/main.c}
 
 \subsection*{Результаты}
-\lstinputlisting[language=Bash]{mapred_indexing.log.txt}
+\lstinputlisting[language=Bash]{index_compression.log.txt}
 
 \subsection*{Выводы}
-GC занял 15\% процессорного времени, использованного при индексации.
-Похоже, что переписав hadoop на какой-то язык с ручным управлением памяти
-можно серьезно сэкономить вычислительные ресурсы.
+При использовании variable byte кодирования индекс сжался в два раза, что примерно
+совпадает с ожиданиями. Но можно улучшить результаты сжав индекс еще и gzip'ом.
 
 \end{document}
 

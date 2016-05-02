@@ -14,8 +14,8 @@
 \newcommand{\StudentName}{Ильвохин Дмитрий}
 \newcommand{\Group}{1O-106М}
 \newcommand{\CourseName}{Информационный поиск}
-\newcommand{\LabNum}{11-12}
-\newcommand{\Subject}{Распределенное индексирование}
+\newcommand{\LabNum}{9-10}
+\newcommand{\Subject}{Индекс биграмм}
 \newcommand{\PrepName}{Калинин А.\,Л.}
 
 \begin{document}
@@ -39,19 +39,19 @@
 \end{flushright}
 
 \subsection*{Задание}
-Реализовать распределенное индексирование с помощью модели
-распределенных вычислений MapReduce.
+Постоить индекс биграмм.
+Для одинаковых документов сравнить размер индекса с биграмми
+с индексом без них.
 
 \subsection*{Исходный код}
-\lstinputlisting{../../../mr_simple_indexing.py}
+\lstinputlisting{../../../make_index.py}
 
 \subsection*{Результаты}
-\lstinputlisting[language=Bash]{mapred_indexing.log.txt}
+\lstinputlisting[language=Bash]{bigram_index.log.txt}
 
 \subsection*{Выводы}
-GC занял 15\% процессорного времени, использованного при индексации.
-Похоже, что переписав hadoop на какой-то язык с ручным управлением памяти
-можно серьезно сэкономить вычислительные ресурсы.
+Размер индекса с биграммами увеличился в 6.1 раз по сравнению
+с индексом без биграмм.
 
 \end{document}
 

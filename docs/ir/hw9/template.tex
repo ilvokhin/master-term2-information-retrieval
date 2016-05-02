@@ -14,8 +14,8 @@
 \newcommand{\StudentName}{Ильвохин Дмитрий}
 \newcommand{\Group}{1O-106М}
 \newcommand{\CourseName}{Информационный поиск}
-\newcommand{\LabNum}{9-10}
-\newcommand{\Subject}{Индекс биграмм}
+\newcommand{\LabNum}{9}
+\newcommand{\Subject}{Координатный индекс}
 \newcommand{\PrepName}{Калинин А.\,Л.}
 
 \begin{document}
@@ -39,19 +39,19 @@
 \end{flushright}
 
 \subsection*{Задание}
-Постоить индекс биграмм.
-Для одинаковых документов сравнить размер индекса с биграмми
-с индексом без них.
+Построить координатный индекс.
+Сравнить размер получившегося индекса с индексом биграмм.
 
 \subsection*{Исходный код}
-\lstinputlisting{../../../make_index.py}
+\lstinputlisting[caption={Построение индекса}]{../../../make_index.py}
+\lstinputlisting[caption={Цитатный поиск}]{../../../cite_coordinate_search.py}
 
 \subsection*{Результаты}
-\lstinputlisting[language=Bash]{bigram_index.log.txt}
+\lstinputlisting[language=Bash]{cite_index.log.txt}
 
 \subsection*{Выводы}
-Размер индекса с биграммами увеличился в 6.1 раз по сравнению
-с индексом без биграмм.
+Координатный индекс получился в 1.5 раза меньше биграммного,
+но в 3 раза больше индекса без координат.
 
 \end{document}
 

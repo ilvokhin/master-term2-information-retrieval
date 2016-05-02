@@ -1,0 +1,6 @@
+(ir) [d@gate index_compression]$ du -cs anna_index.*
+1128    anna_index.easy.bin
+488     anna_index.easy.bin.gz
+564     anna_index.variable_byte.bin
+316     anna_index.variable_byte.bin.gz
+2496    total

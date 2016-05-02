@@ -1,0 +1,15 @@
+(ir) [d@gate ir]$ echo "счастливые семьи похожи друг" |\
+> python cite_coordinate_search.py -i karenina.stem.coordinates.pickle.gz
+load_index takes 14.009504 sec
+query "счастливые семьи похожи друг": found 1 docs, [(0, [1])]
+
+(ir) [d@gate ir]$ echo "счастливые семьи похожи друг на друга" |\
+> python cite_coordinate_search.py -i karenina.stem.coordinates.pickle.gz 
+load_index takes 12.752765 sec
+query "счастливые семьи похожи друг на друга": found 1 docs, [(0, [1])]
+
+(ir) [d@gate ir]$ du -csh karenina.stem.*
+3.8M    karenina.stem.bigrams.pickle.gz
+2.5M    karenina.stem.coordinates.pickle.gz
+628K    karenina.stem.pickle.gz
+6.9M    total
