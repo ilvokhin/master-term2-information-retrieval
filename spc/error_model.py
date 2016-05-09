@@ -61,7 +61,7 @@ def calc_simple_errors(src, dst):
         elif j > 0 and dp[i, j - 1] + 1 == dp[i, j]:
             errors.append(('I', '', dst[j - 1]))
             j -= 1
-        elif i > 0 and j > 0: 
+        elif i > 0 and j > 0:
             if dp[i - 1, j - 1] + 1 == dp[i, j]:
                 errors.append(('R', src[i - 1], dst[j - 1]))
             i -= 1

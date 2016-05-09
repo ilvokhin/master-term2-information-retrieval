@@ -6,10 +6,12 @@ import argparse
 import error_model
 from error_model import ErrorModel
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Dump error model')
     parser.add_argument('-s', '--src', required=True)
     return parser.parse_args()
+
 
 def main():
     args = parse_args()
