@@ -1,0 +1,140 @@
+\documentclass[12pt]{article}
+
+\usepackage{tabu}
+\usepackage{fullpage}
+\usepackage{multicol, multirow}
+\usepackage{tabularx}
+\usepackage{standalone}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\newcommand{\StudentName}{Ильвохин Дмитрий}
+\newcommand{\Group}{1O-106М}
+\newcommand{\CourseName}{Обработка естественных языков}
+\newcommand{\LabNum}{3}
+\newcommand{\Subject}{Поиск коллокаций}
+\newcommand{\PrepName}{Калинин А.\,Л.}
+
+\begin{document}
+
+\lstset
+{
+        language=Python,
+        basicstyle=\footnotesize,% basic font setting
+        extendedchars=\true
+}
+
+\begin{flushright}
+\Large{
+	\CourseName \\
+	Лабораторная работа №\,\LabNum \\
+	<<\Subject>> \\
+  \StudentName, \Group \\
+  Дата: \line(1,0){150} \\
+  Подпись: \line(1,0){150} \\
+}
+\end{flushright}
+
+\subsection*{Задание}
+\begin{itemize}
+  \item Взять большой тематический корпус текста.
+  \item Выбрать метод (или несколько) поиска коллокаций.
+  \item Применить его к корпусу.
+  \item Получить все коллокации.
+\end{itemize}
+
+\subsection*{Исходный код}
+\lstinputlisting{../../../find_collocations.py}
+
+\subsection*{Результаты}
+\lstinputlisting{collocations.log.txt}
+
+\begin{center}
+  \begin{table}[!htb]
+     \begin{tabu}{|c|c|c|c|c|c|}
+        \hline
+        t-значение & $freq_1$ & $freq_2$ & $freq_{bi}$ & биграмма \\ \hline
+        39.8333099048 & 1602 & 1735 & 1588 & риа новости  \\ \hline
+        27.6254611372 & 808 & 4440 & 766 & настоящее время  \\ \hline
+        25.8520545209 & 1877 & 9877 & 684 & 2009 года  \\ \hline
+        25.8047473799 & 5313 & 1602 & 673 & сообщает риа  \\ \hline
+        25.7521909451 & 1776 & 9877 & 678 & 2008 года  \\ \hline
+        25.3727882601 & 1668 & 3070 & 648 & миллионов долларов  \\ \hline
+        24.9700487669 & 1616 & 9877 & 637 & 2011 года  \\ \hline
+        24.8698554286 & 830 & 917 & 619 & таким образом  \\ \hline
+        24.8297645417 & 1614 & 9877 & 630 & 2012 года  \\ \hline
+        24.6413044973 & 1652 & 9877 & 621 & 2010 года  \\ \hline
+        22.5468717044 & 1042 & 3070 & 511 & миллиарда долларов  \\ \hline
+        22.1868799415 & 1038 & 948 & 493 & стало известно  \\ \hline
+        21.8829829588 & 1329 & 9877 & 490 & 2007 года  \\ \hline
+        20.68966597 & 1304 & 9877 & 439 & 2006 года  \\ \hline
+        20.3604161001 & 451 & 1359 & 415 & уголовное дело  \\ \hline
+        20.3255223776 & 5313 & 865 & 417 & сообщает интерфакс  \\ \hline
+        20.0924518944 & 870 & 9877 & 411 & 2014 года  \\ \hline
+        19.9328920927 & 797 & 9877 & 404 & 2013 года  \\ \hline
+        19.8544262307 & 1088 & 928 & 395 & владимир путин  \\ \hline
+        19.8223105459 & 395 & 419 & 393 & associated press  \\ \hline
+        19.6608060787 & 954 & 3070 & 389 & миллиардов долларов  \\ \hline
+        19.1018929729 & 371 & 548 & 365 & сих пор  \\ \hline
+        18.3554935329 & 2219 & 2693 & 342 & тысяч человек  \\ \hline
+        17.8819711664 & 335 & 4440 & 321 & ближайшее время  \\ \hline
+        17.7435951244 & 491 & 491 & 315 & правоохранительных органов  \\ \hline
+        17.7294903785 & 1877 & 5426 & 323 & 2009 году  \\ \hline
+        17.728457193 & 2219 & 1966 & 318 & тысяч рублей  \\ \hline
+        17.6693162699 & 2219 & 3070 & 318 & тысяч долларов  \\ \hline
+        17.6442716809 & 1032 & 3070 & 314 & миллиона долларов  \\ \hline
+        17.5621326583 & 954 & 1966 & 310 & миллиардов рублей  \\ \hline
+    \end{tabu}
+  \end{table}
+\end{center}
+
+\begin{center}
+  \begin{table}[!htb]
+     \begin{tabu}{|c|c|c|c|c|c|}
+        \hline
+        значение $\chi^2$  & $freq_1$ & $freq_2$ & $freq_{bi}$ & биграмма \\ \hline
+        2323028.0 & 11 & 11 & 11 & cash carry \\ \hline
+        2323028.0 & 11 & 11 & 11 & procter gamble \\ \hline
+        2323028.0 & 10 & 10 & 10 & «арктик санрайз» \\ \hline
+        2323028.0 & 12 & 12 & 12 & хизб ут-тахрир \\ \hline
+        2323028.0 & 11 & 11 & 11 & «боко харам» \\ \hline
+        2323028.0 & 12 & 12 & 12 & mazeikiu nafta \\ \hline
+        2323028.0 & 10 & 10 & 10 & «ямал спг» \\ \hline
+        2323028.0 & 26 & 26 & 26 & «правый сектор» \\ \hline
+        2323028.0 & 12 & 12 & 12 & саудовскую аравию \\ \hline
+        2323028.0 & 31 & 31 & 31 & «правого сектора» \\ \hline
+        2323028.0 & 13 & 13 & 13 & нон грата \\ \hline
+        2284666.88137 & 240 & 242 & 239 & agence france-presse \\ \hline
+        2254702.67647 & 34 & 33 & 33 & northrop grumman \\ \hline
+        2222025.82609 & 23 & 22 & 22 & societe generale \\ \hline
+        2191533.01887 & 53 & 50 & 50 & «исламское государство» \\ \hline
+        2177837.8125 & 15 & 16 & 15 & goldman sachs \\ \hline
+        2177836.875 & 30 & 32 & 30 & кд авиа \\ \hline
+        2167819.6195 & 395 & 419 & 393 & associated press \\ \hline
+        2167613.66266 & 87 & 89 & 85 & dow jones \\ \hline
+        2157096.5 & 14 & 13 & 13 & gran turismo \\ \hline
+        2144332.61538 & 13 & 12 & 12 & elder scrolls \\ \hline
+        2129441.41667 & 12 & 11 & 11 & русиа петролеум \\ \hline
+        2129441.41667 & 11 & 12 & 11 & foo fighters \\ \hline
+        2107583.04435 & 31 & 32 & 30 & hollywood reporter \\ \hline
+        2107477.10233 & 1602 & 1735 & 1588 & риа новости \\ \hline
+        2064911.11111 & 27 & 24 & 24 & los angeles \\ \hline
+        2060330.64301 & 44 & 41 & 40 & pussy riot \\ \hline
+        2023613.63556 & 15 & 15 & 14 & happy meal \\ \hline
+        2020021.73913 & 23 & 20 & 20 & final fantasy \\ \hline
+        2006248.86364 & 19 & 22 & 19 & t2 ultra \\ \hline
+    \end{tabu}
+  \end{table}
+\end{center}
+
+\subsection*{Выводы}
+Коллокации отобранные с помощью критерия $\chi^2$, кажется, выглядят
+солиднее. Возможно, из-за того, что не требует <<нормальности>> распределения.
+
+
+\end{document}
+

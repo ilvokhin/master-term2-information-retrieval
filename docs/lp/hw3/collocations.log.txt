@@ -1,0 +1,13 @@
+(ir) [d@gate ir]$ python find_collocations.py \
+  > -b lenta_bigrams.txt \
+  > -u lenta_unigrams.txt \
+  > -a 0.001 \
+  > -f student > /tmp/col_student.txt
+
+
+(ir) [d@gate ir]$ python find_collocations.py \
+  > -b lenta_bigrams.txt \
+  > -u lenta_unigrams.txt \
+  > -a 0.001 \
+  > -f pearson > /tmp/col_pearson.txt
+
