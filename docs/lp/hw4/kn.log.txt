@@ -1,0 +1,19 @@
+(spc)[d.ilvokhin@spell-idx spc]$ python kneser_ney.py \
+  > -u data/unigrams.txt \
+  > -b data/bigrams.txt \
+  > -t 3 \
+  > -p 0.1 \
+  > -q data/fixes.txt \
+  > -d data/kn2.pickle.bin
+
+0.000001        0.446072
+0.000010        0.446079
+0.000100        0.446064
+0.001000        0.446019
+0.010000        0.445821
+best: 0.000010  0.446079
+
+(spc)[d.ilvokhin@spell-idx spc]$ python test_kneser_ney.py \
+  > -s data/kn2.pickle.bin
+  > -q data/fixes_test.txt
+val: 0.448986
