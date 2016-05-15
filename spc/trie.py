@@ -28,6 +28,17 @@ class Trie(object):
             cur_node_pos = cur_node[ch]
         self.vals[cur_node_pos] = val
 
+    def find(self, key, default_value=None):
+        cur_node_pos = 0
+        for ch in key:
+            cur_node = self.nodes[cur_node_pos]
+            if ch not in cur_node:
+                return default_value
+            cur_node_pos = cur_node[ch]
+        if cur_node_pos in self.vals:
+            return self.vals[cur_node_pos]
+        return default_value
+
 
 class FuzzyPath(object):
     def __init__(self, weight, node_id, pos, dist, prefix):
@@ -54,10 +65,10 @@ class FuzzySearcher(object):
             if len(key) > dist[0]:
                 return dist[1]
 
-    def find(self, key, max_candidates=30):
+    def find(self, key, max_candidates=-1):
         max_dist = self.max_dist(key)
         pq = [FuzzyPath(0.0, 0, -1, max_dist, '')]
-        candidates = set([])
+        candidates = {}
 
         while pq:
             cur_path = heappop(pq)
@@ -96,12 +107,16 @@ class FuzzySearcher(object):
                 heappush(pq, delete)
 
             if next_ch is None and cur_path.node_id in self.trie.vals:
-                candidates.add((cur_path.prefix,
-                                self.trie.vals[cur_path.node_id]))
-                if len(candidates) > max_candidates:
+                cand = cur_path.prefix
+                if cand not in candidates and cand != key:
+                    candidates[cand] = (self.trie.vals[cur_path.node_id],
+                                        cur_path.weight)
+                if max_candidates != -1 and len(candidates) > max_candidates:
                     break
 
-        return candidates
+        return [(cand, ) + candidates[cand] for cand in
+                sorted(candidates, key=lambda x: candidates[x][0] + candidates[x][1],
+                       reverse=True)]
 
 
 def make_fuzzy_trie(unigrams, error_model):
@@ -109,7 +124,7 @@ def make_fuzzy_trie(unigrams, error_model):
     for uni in unigrams:
         trie.add(uni, unigrams[uni])
 
-    max_dist = [(0, 1), (4, 2), (6, 3)]
+    max_dist = [(0, 0), (2, 1), (4, 2), (6, 3)]
     fuzzy_trie = FuzzySearcher(trie, error_model, max_dist)
     return fuzzy_trie
 

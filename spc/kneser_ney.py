@@ -63,6 +63,10 @@ class KneserNey(object):
     def calc(self, phrase):
         return self.calc_log_prob_phrase(phrase)
 
+    def calc_bi(self, first, second):
+        prob = self.calc_prob_bigram(first, second)
+        return log(prob, 2)
+
 
 def make_kneser_ney(unigrams, bigrams, oov_threshold, oov_percent):
     oov_candidates = [uni for uni in unigrams if unigrams[uni] < oov_threshold]

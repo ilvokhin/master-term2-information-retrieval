@@ -21,10 +21,10 @@ def main():
 
     for line in sys.stdin:
         key = line.decode('utf8').strip()
-        candidates = fuzzy_searcher.find(key, 3)
+        candidates = fuzzy_searcher.find(key)
         for candidate in sorted(candidates, key=lambda x: x[1], reverse=True):
-            word, weight = candidate
-            print '\t'.join([word, str(weight)]).encode('utf8')
+            word, weight, err = candidate
+            print '\t'.join([word, str(weight), str(err)]).encode('utf8')
 
 if __name__ == "__main__":
     main()
