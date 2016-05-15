@@ -42,9 +42,6 @@ class FuzzyPath(object):
             return self.node_id < other.node_id
         return self.weight < other.weight
 
-    def __str__(self):
-        return ('FuzzyPath(weight = %f, node_id = %d, pos = %d, dist = %d, prefix = %s)' % (self.weight, self.node_id, self.pos, self.dist, self.prefix)).encode('utf8')
-
 
 class FuzzySearcher(object):
     def __init__(self, trie, error_model, max_dists):
@@ -57,14 +54,13 @@ class FuzzySearcher(object):
             if len(key) > dist[0]:
                 return dist[1]
 
-    def find(self, key, max_candidates = 30):
+    def find(self, key, max_candidates=30):
         max_dist = self.max_dist(key)
         pq = [FuzzyPath(0.0, 0, -1, max_dist, '')]
         candidates = set([])
 
         while pq:
             cur_path = heappop(pq)
-            #print str(cur_path)
             cur_node = self.trie.nodes[cur_path.node_id]
             next_pos = cur_path.pos + 1
             next_ch = key[next_pos] if len(key) > next_pos else None
