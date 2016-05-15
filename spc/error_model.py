@@ -29,7 +29,7 @@ class ErrorModel(object):
         return prob
 
     def calc(self, how, from_ch, to_ch):
-        return calc_log_prob_phrase(self, how, from_ch, to_ch)
+        return self.calc_log_prob_phrase(how, from_ch, to_ch)
 
 
 def calc_lev_dist(src, dst):
