@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}
+
+\usepackage{tabu}
+\usepackage{fullpage}
+\usepackage{multicol, multirow}
+\usepackage{tabularx}
+\usepackage{standalone}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\newcommand{\StudentName}{Ильвохин Дмитрий}
+\newcommand{\Group}{1O-106М}
+\newcommand{\CourseName}{Обработка естественных языков}
+\newcommand{\LabNum}{4}
+\newcommand{\Subject}{Спеллчекер}
+\newcommand{\PrepName}{Калинин А.\,Л.}
+
+\begin{document}
+
+\lstset
+{
+        language=Python,
+        basicstyle=\footnotesize,% basic font setting
+        extendedchars=\true
+}
+
+\begin{flushright}
+\Large{
+	\CourseName \\
+	Лабораторная работа №\,\LabNum \\
+	<<\Subject>> \\
+  \StudentName, \Group \\
+  Дата: \line(1,0){150} \\
+  Подпись: \line(1,0){150} \\
+}
+\end{flushright}
+
+\subsection*{Задание}
+  Реализовать спеллчекер.
+
+\subsection*{Исходный код}
+\lstinputlisting[caption={Модель ошибок}]{../../../spc/error_model.py}
+\lstinputlisting[caption={Поиск в боре}]{../../../spc/trie.py}
+\lstinputlisting[caption={Алгоритм Витерби}]{../../../spc/viterbi.py}
+
+\subsection*{Результаты}
+\lstinputlisting{slow_spc.log.txt}
+
+\subsection*{Выводы}
+Очень медленно работает нечеткий поиск в боре. Возможно, перебирает слишком много
+  вариантов и к тому же на это наложилась неторопливость Python'а.
+
+
+\end{document}
+

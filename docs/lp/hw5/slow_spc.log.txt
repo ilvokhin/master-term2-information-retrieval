@@ -1,0 +1,31 @@
+(spc)[d.ilvokhin@spell-idx spc]$ echo "перзидент птин" |\
+  > python simple_slow_spc.py \
+  > -t data/trie2.picke.bin \
+  > -l data/kn5.pickle.bin \
+  > -i 3
+
+"перзидент птин" -> "президент путин"
+
+(spc)[d.ilvokhin@spell-idx spc]$ echo "яндекс" |\
+  > python simple_slow_spc.py \
+  > -t data/trie2.picke.bin \
+  > -l data/kn5.pickle.bin \
+  > -i 3
+
+"яндекс"
+
+(spc)[d.ilvokhin@spell-idx spc]$ echo "аднаклассники мая страница" |\
+  >  python simple_slow_spc.py \
+  > -t data/trie2.picke.bin \
+  > -l data/kn5.pickle.bin \
+  > -i 3
+
+"аднаклассники мая страница" -> "одноклассники моя страница"
+
+(spc)[d.ilvokhin@spell-idx spc]$ echo "аша и меведь" |\
+  >  python simple_slow_spc.py \
+  > -t data/trie2.picke.bin \
+  > -l data/kn5.pickle.bin \
+  > -i 3
+
+"аша и меведь" -> "маша и медведь"
