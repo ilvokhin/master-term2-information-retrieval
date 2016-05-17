@@ -63,7 +63,7 @@ class Generator(object):
         terms = normalize(query)
         candidates = []
         for term in terms:
-            term_cands = self.fuzzy_searcher.find(term, -1)
+            term_cands = self.fuzzy_searcher.find(term, max_candidates)
             orig_weight = self.fuzzy_searcher.trie.find(term, 0.0)
             term_cands.append((term, orig_weight, 0.0))
             candidates.append(term_cands)

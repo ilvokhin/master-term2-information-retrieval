@@ -52,8 +52,10 @@ class KneserNey(object):
 
         return bi + lambda_coef * p_cont
 
-    def calc_log_prob_phrase(self, phrase):
-        words = ['^'] + phrase.split() + ['$']
+    def calc_log_prob_phrase(self, phrase, use_last_santinel=True):
+        words = ['^'] + phrase.split()
+        if use_last_santinel:
+            words.append('$')
         out = 0.
         for pos in xrange(len(words) - 1):
             cur_prob = self.calc_prob_bigram(words[pos], words[pos + 1])

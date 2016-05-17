@@ -119,6 +119,19 @@ class FuzzySearcher(object):
                        reverse=True)]
 
 
+class CachedFuzzySearcher(FuzzySearcher):
+    def build_cache(self, unigrams, max_candidates=-1):
+        self.cache = {}
+        for uni in unigrams:
+            candidates = super(CachedFuzzySearcher, self).find(uni, max_candidates)
+            self.cache[uni] = candidates
+
+    def find(self, key, max_candididates):
+        if key in self.cache:
+            return self.cache[key]
+        return super(FuzzySearcher, self).find(key, max_candidates)
+
+
 def make_fuzzy_trie(unigrams, error_model):
     trie = Trie()
     for uni in unigrams:
@@ -127,6 +140,17 @@ def make_fuzzy_trie(unigrams, error_model):
     max_dist = [(0, 0), (2, 1), (4, 2), (6, 3)]
     fuzzy_trie = FuzzySearcher(trie, error_model, max_dist)
     return fuzzy_trie
+
+
+def make_cached_fuzzy_trie(unigrams, error_model):
+    trie = Trie()
+    for uni in unigrams:
+        trie.add(uni, unigrams[uni])
+
+    max_dist = [(0, 0), (2, 1), (4, 2), (6, 3)]
+    cached_fuzzy_trie = CachedFuzzySearcher(trie, error_model, max_dist)
+    cached_fuzzy_trie.build_cache(unigrams, 10)
+    return cahced_fuzzy_searcher
 
 
 def save_trie(trie, filename):
@@ -144,6 +168,7 @@ def parse_args():
     parser.add_argument('-u', '--unigrams', required=True)
     parser.add_argument('-e', '--error-model', required=True)
     parser.add_argument('-d', '--dst', required=True)
+    parser.add_argument('-c', '--cached', action='store_true')
     return parser.parse_args()
 
 
@@ -156,7 +181,10 @@ def main():
 
     error_model = em.load_error_model(args.error_model)
 
-    fuzzy_trie = make_fuzzy_trie(unigrams, error_model)
+    if args.cached:
+        fuzzy_trie = make_cached_fuzzy_trie(unigrams, error_model)
+    else:
+        fuzzy_trie = make_fuzzy_trie(unigrams, error_model)
     save_trie(fuzzy_trie, args.dst)
 
 if __name__ == "__main__":
