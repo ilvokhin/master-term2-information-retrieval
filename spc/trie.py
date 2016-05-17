@@ -137,7 +137,7 @@ def make_fuzzy_trie(unigrams, error_model):
     for uni in unigrams:
         trie.add(uni, unigrams[uni])
 
-    max_dist = [(0, 0), (2, 1), (4, 2), (6, 3)]
+    max_dist = [(0, 0), (2, 1), (4, 1), (6, 2)]
     fuzzy_trie = FuzzySearcher(trie, error_model, max_dist)
     return fuzzy_trie
 
